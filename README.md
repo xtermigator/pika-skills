@@ -17,6 +17,7 @@ When you install a skill into your agent workspace, the agent automatically dete
 | Skill | Pricing | Description |
 |-------|---------|-------------|
 | [pikastream-video-meeting](pikastream-video-meeting/) | $0.275 / min | Join a Google Meet as a real-time AI avatar. |
+| [static-site-hosting](static-site-hosting/) | Free | Deploy a static website to GitHub Pages, Netlify, or Surge.sh. |
 
 ## Getting Started
 
@@ -89,6 +90,50 @@ python scripts/pikastreaming_videomeeting.py clone-voice \
 - Python 3.10+
 - `PIKA_DEV_KEY` environment variable
 - `ffmpeg` (optional, for audio format conversion during voice cloning)
+
+## Skill: static-site-hosting
+
+Deploys a local static website (plain HTML/CSS/JS or any pre-built output folder) to a free hosting platform.
+
+### Features
+
+- **GitHub Pages** — pushes your build to a `gh-pages` branch and enables GitHub Pages automatically.
+- **Netlify** — zips your site and deploys it via the Netlify API; supports custom site names.
+- **Surge.sh** — uploads your site via the Surge API; auto-generates a URL if no domain is specified.
+- **Custom domains** — pass a `--cname` (GitHub Pages) or `--domain` (Surge) flag for your own domain.
+
+### Commands
+
+The skill script supports three subcommands:
+
+```bash
+# Deploy to GitHub Pages
+python scripts/deploy_static_site.py github-pages \
+  --dir ./dist --repo owner/repo [--branch gh-pages] [--cname www.example.com]
+
+# Deploy to Netlify
+python scripts/deploy_static_site.py netlify \
+  --dir ./dist [--site-name my-portfolio]
+
+# Deploy to Surge.sh
+python scripts/deploy_static_site.py surge \
+  --dir ./dist [--domain my-portfolio.surge.sh]
+```
+
+### Environment Variables
+
+| Variable | Required for | Description |
+|----------|-------------|-------------|
+| `GITHUB_TOKEN` | GitHub Pages | Personal access token with `repo` scope. Create one at [github.com/settings/tokens](https://github.com/settings/tokens). |
+| `NETLIFY_AUTH_TOKEN` | Netlify | Personal access token. Create one at [app.netlify.com/user/applications](https://app.netlify.com/user/applications#personal-access-tokens). |
+| `SURGE_LOGIN` | Surge.sh | Your Surge account email. |
+| `SURGE_TOKEN` | Surge.sh | Your Surge token (run `surge token` in a terminal). |
+
+### Requirements
+
+- Python 3.10+
+- `requests` library (`pip install -r requirements.txt`)
+- `git` in `PATH` (GitHub Pages only)
 
 ## Contributing
 

@@ -325,7 +325,8 @@ def cmd_surge(args: argparse.Namespace):
     else:
         # Auto-generate a domain from the directory name.
         stem = re.sub(r"[^a-z0-9-]", "-", site_dir.name.lower()).strip("-") or "my-site"
-        import random, string
+        import random
+        import string
         suffix = "".join(random.choices(string.ascii_lowercase + string.digits, k=6))
         domain = f"{stem}-{suffix}.surge.sh"
 
@@ -333,22 +334,25 @@ def cmd_surge(args: argparse.Namespace):
 
     headers = _surge_token_header(login, token)
 
-    # Collect all files.
-    files_payload = {}
-    for file_path in site_dir.rglob("*"):
-        if file_path.is_file():
-            rel = str(file_path.relative_to(site_dir))
-            files_payload[rel] = open(file_path, "rb")  # noqa: WPS515
-
+    # Collect all files, keeping handles open only for the duration of the upload.
+    file_paths = [p for p in site_dir.rglob("*") if p.is_file()]
+    file_handles = []
     try:
+        files_arg = []
+        for file_path in file_paths:
+            rel = str(file_path.relative_to(site_dir))
+            fh = open(file_path, "rb")  # noqa: WPS515
+            file_handles.append(fh)
+            files_arg.append((rel, (rel, fh)))
+
         r = requests.put(
             f"https://surge.surge.sh/{domain}/",
             headers=headers,
-            files={k: (k, v) for k, v in files_payload.items()},
+            files=files_arg,
             timeout=120,
         )
     finally:
-        for fh in files_payload.values():
+        for fh in file_handles:
             fh.close()
 
     if not r.ok:

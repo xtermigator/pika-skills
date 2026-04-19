@@ -1,8 +1,6 @@
 # Inclusive Game Day
 
-**Inclusive Game Day** is a free, non-commercial, open-source project dedicated to making tabletop and group games accessible to everyone — especially people with invisible disabilities and sensory needs.
-
-> This is a public-interest resource. It is not affiliated with any commercial product or service, and no part of this project is intended to generate revenue.
+**Inclusive Game Day** is a free, non-commercial, open-source public-interest accessibility project focused on improving inclusion, predictability, and support for people with invisible disabilities, sensory needs, chronic illness, neurodivergence, anxiety, and other conditions that can make participation in public experiences more difficult. It is not affiliated with any commercial product or service, and no part of this project is intended to generate revenue.
 
 ---
 

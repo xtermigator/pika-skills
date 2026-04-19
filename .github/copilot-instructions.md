@@ -74,3 +74,4 @@ This project explicitly serves people with **invisible disabilities** and sensor
 - Do not introduce new third-party dependencies without a clear accessibility or public-interest justification.
 - Do not add analytics, telemetry, cookie banners, or any tracking code.
 - Follow semantic HTML5 practices and keep CSS minimal and readable.
+- Do **not** alter or remove the `LICENSE` file, `CODE_OF_CONDUCT.md`, or any `README` section that describes this project as non-commercial and open-source. These documents are part of the project's public commitment and must be preserved as-is.

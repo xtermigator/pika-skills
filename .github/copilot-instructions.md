@@ -1,4 +1,4 @@
-# Copilot Instructions for pika-skills
+# Copilot Instructions for Inclusive Game Day
 
 ## Project mission
 

@@ -1,68 +1,46 @@
 # Inclusive Game Day
 
-**Inclusive Game Day** is a free, non-commercial, open-source public-interest accessibility project focused on improving inclusion, predictability, and support for people with invisible disabilities, sensory needs, chronic illness, neurodivergence, anxiety, and other conditions that can make participation in public experiences more difficult. It is not affiliated with any commercial product or service, and no part of this project is intended to generate revenue.
+Inclusive Game Day is a free, non-commercial, open-source public-interest accessibility project focused on improving inclusion, predictability, and support for people with invisible disabilities, sensory needs, chronic illness, neurodivergence, anxiety, and other conditions that can make participation in public experiences more difficult.
 
----
+## Purpose
 
-## What Is This?
+This project exists to provide practical accessibility resources, public education, and inclusive planning support. It is designed to help make public experiences more welcoming, more predictable, and more accessible.
 
-Inclusive Game Day provides tools, guides, and resources that help organizers, educators, and individuals run game sessions that are welcoming and barrier-free for people with:
+## What This Project Supports
 
-- Invisible disabilities (chronic illness, chronic pain, ADHD, autism, anxiety, PTSD, and more)
-- Sensory sensitivities (sound, light, touch, texture, scent)
-- Cognitive and processing differences
-- Fatigue-related conditions
-- Social anxiety and communication differences
-
-Our goal is to reduce the friction between "wanting to participate" and "being able to participate."
-
----
+Inclusive Game Day supports:
+- inclusion and meaningful participation
+- predictability and reduced overwhelm
+- sensory-aware planning
+- accessibility for invisible disabilities
+- flexible participation across different needs and energy levels
 
 ## Non-Commercial Commitment
 
-This project is entirely non-commercial:
+This project is entirely non-commercial.
 
-- No ads, no paywalls, no premium tiers
-- No data collection or tracking
-- No sponsorships that influence content
-- All resources are and will remain freely available
-
----
-
-## Live Site
-
-The project is deployed on **Netlify** and is publicly accessible at:
-
-> [https://inclusive-game-day.netlify.app](https://inclusive-game-day.netlify.app)
-
----
+- No ads
+- No paywalls
+- No premium tiers
+- No sponsored content that shapes the project mission
+- No revenue-generating purpose
 
 ## Open Source
 
-This repository is open source, licensed under the [MIT License](LICENSE).
-
-We welcome contributions from anyone — especially people with lived experience of disability, access needs, or running inclusive events. See [CONTRIBUTING.md](CONTRIBUTING.md) if it exists, or open an issue to start a conversation.
-
----
+This repository is open source and licensed under the MIT License.
 
 ## Community Standards
 
-We take accessibility and respect seriously. All contributors and users are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+All contributors and users are expected to follow the Code of Conduct in this repository.
 
----
+## Live Site
+
+This project is deployed on Netlify.
+
+## Netlify Credit
+
+This site is powered by Netlify.
 
 ## Contributing
 
-1. Fork this repository
-2. Create a branch for your change
-3. Submit a pull request with a clear description of what you've added or changed
-
-For significant changes, please open an issue first to discuss the approach.
-
-All contributions must be consistent with the non-commercial, public-interest mission of the project.
-
----
-
-## License
-
-MIT License — Copyright (c) 2026 Eric S. Fishon. See [LICENSE](LICENSE) for full terms.
+Contributions are welcome, especially from people with lived experience of disability, access needs, inclusive event planning, and accessibility advocacy.

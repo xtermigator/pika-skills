@@ -1,7 +1,7 @@
 ---
 name: pikastream-video-meeting
 description: |
-  Join a Google Meet or Zoom call as a video meeting agent via PikaStreaming.
+  Join a Google Meet or Zoom call as an accessible video meeting agent.
   Trigger: user drops a Google Meet or Zoom link, or asks to join a meeting.
 metadata:
   openclaw:
@@ -11,7 +11,7 @@ metadata:
     primaryEnv: "PIKA_DEV_KEY"
 ---
 
-# PikaStream Video Meeting
+# Video Meeting Skill
 
 Script: `SKILL_DIR=skills/pikastream-video-meeting`
 
@@ -129,7 +129,7 @@ python $SKILL_DIR/scripts/pikastreaming_videomeeting.py join \
 
 Tell the user you're in. Say `leave` to leave. Don't mention session IDs.
 
-**Exit codes:** 0 = joined. 6 = insufficient credits (stdout JSON contains a `checkout_url` — show it to the user).
+**Exit codes:** 0 = joined. 6 = API service credits insufficient (stdout JSON contains a `checkout_url` — show it to the user so they can add credits).
 
 ## Leave
 

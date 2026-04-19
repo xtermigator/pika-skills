@@ -1,21 +1,11 @@
 #!/usr/bin/env python
-# Copyright 2026 Pika Labs, Inc.
+# Copyright 2026 Eric S. Fishon
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Licensed under the MIT License.
 
-"""PikaStreaming Video Meeting — join or leave a meeting via PikaStreaming API.
+"""Video Meeting skill — join or leave an accessible video meeting session via the configured API.
 
-Authenticates through the Pika API proxy (PIKA_API_BASE_URL + PIKA_DEV_KEY).
+Authenticates through the API proxy (PIKA_API_BASE_URL + PIKA_DEV_KEY).
 
 Requires PIKA_DEV_KEY to be set in the environment before running. When called
 non-interactively (e.g. from an agent or CI), the key MUST be pre-configured —
@@ -58,7 +48,7 @@ def get_api_config() -> tuple[str, dict[str, str]]:
 
     dev_key = os.environ.get("PIKA_DEV_KEY", "").strip()
     if not dev_key:
-        eprint("Error: PIKA_DEV_KEY is required. Get one at https://www.pika.me/dev/login")
+        eprint("Error: PIKA_DEV_KEY is required. Set it in your environment before running.")
         sys.exit(1)
     headers = {"Authorization": f"DevKey {dev_key}"}
 
@@ -75,7 +65,7 @@ def infer_platform(url: str) -> str | None:
 
 
 DEVKEY_FILE = Path.home() / ".pika" / "devkey"
-SIGNUP_URL = "https://www.pika.me/dev/login"
+API_SETUP_DOCS = "See the project README for API setup instructions."
 
 
 def get_devkey() -> str:
@@ -120,8 +110,7 @@ def ensure_funded(min_balance: int = 100, poll_interval: int = 10, poll_timeout:
     if not dev_key:
         print(json.dumps({
             "status": "no_devkey",
-            "message": f"No Pika Developer Key found. Sign up at {SIGNUP_URL} to get your API key, then set PIKA_DEV_KEY in the environment.",
-            "signup_url": SIGNUP_URL,
+            "message": f"PIKA_DEV_KEY not set. {API_SETUP_DOCS}",
         }))
         return False
 
@@ -151,7 +140,7 @@ def ensure_funded(min_balance: int = 100, poll_interval: int = 10, poll_timeout:
         print(json.dumps({
             "status": "needs_topup",
             "balance": balance,
-            "message": f"No credit packs available. Visit {SIGNUP_URL} to top up.",
+            "message": "The API service reported no available credit options. Check your API configuration or service status.",
         }))
         return False
 
@@ -182,7 +171,7 @@ def ensure_funded(min_balance: int = 100, poll_interval: int = 10, poll_timeout:
         "product": chosen["name"],
         "credits": chosen["numCredits"],
         "checkout_url": checkout_url,
-        "message": f"Open the checkout URL to purchase {chosen['name']}. Waiting for payment...",
+        "message": f"API service credits required. Visit the checkout URL to add credits ({chosen['name']}). Waiting for confirmation...",
     }))
     sys.stdout.flush()
 
@@ -193,12 +182,12 @@ def ensure_funded(min_balance: int = 100, poll_interval: int = 10, poll_timeout:
         time.sleep(poll_interval)
         balance = check_balance(base_url, dev_key)
         if balance is not None and balance >= min_balance:
-            eprint(f"Payment received! Balance: {balance}")
+            eprint(f"Credits confirmed! Balance: {balance}")
             print(json.dumps({"status": "funded", "balance": balance}))
             return True
         eprint(f"  balance: {balance or '?'} — waiting...")
 
-    print(json.dumps({"status": "payment_timeout", "message": "Payment not completed in time. Try again."}))
+    print(json.dumps({"status": "payment_timeout", "message": "Credits not confirmed in time. Try again."}))
     return False
 
 

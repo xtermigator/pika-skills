@@ -15,7 +15,7 @@ Usage:
   python pikastreaming_videomeeting.py join --meet-url <url> --bot-name <name> [--voice-id <id>] [--image <path>] [--meeting-password <pw>] [--system-prompt <desc>] [--system-prompt-file <path>] [--timeout-sec 90]
   python pikastreaming_videomeeting.py leave --session-id <id>
 
-Exit codes: 0=ok, 2=validation, 3=http, 4=session error, 5=timeout, 6=funding (checkout URL in stdout JSON)
+Exit codes: 0=ok, 2=validation, 3=http, 4=session error, 5=timeout
 """
 
 from __future__ import annotations
@@ -64,139 +64,8 @@ def infer_platform(url: str) -> str | None:
     return None
 
 
-DEVKEY_FILE = Path.home() / ".pika" / "devkey"
-API_SETUP_DOCS = "See the project README for API setup instructions."
-
-
-def get_devkey() -> str:
-    """Get DevKey from env or local file. Returns empty string if not found."""
-    key = os.environ.get("PIKA_DEV_KEY", "").strip()
-    if key:
-        return key
-    if DEVKEY_FILE.exists():
-        key = DEVKEY_FILE.read_text().strip()
-    return key
-
-
-def check_balance(base_url: str, dev_key: str) -> int | None:
-    """Return balance or None on error."""
-    try:
-        r = requests.get(
-            f"{base_url}/developer/balance",
-            headers={"Authorization": f"DevKey {dev_key}"},
-            timeout=15,
-        )
-        if r.ok:
-            return r.json().get("data", r.json()).get("balance", 0)
-        eprint(f"Balance check failed: HTTP {r.status_code}")
-        return None
-    except Exception as e:
-        eprint(f"Balance check error: {e}")
-        return None
-
-
-def ensure_funded(min_balance: int = 100, poll_interval: int = 10, poll_timeout: int = 300) -> bool:
-    """Full funding pipeline. Returns True when funded, False on failure.
-
-    Flow:
-      1. Check DevKey exists → if not, output signup URL and wait for user to provide key
-      2. Check balance → if funded, return True
-      3. Auto-create topup checkout → output URL and poll until funded
-    """
-    base_url = os.environ.get("PIKA_API_BASE_URL", DEFAULT_API_BASE).rstrip("/")
-
-    # --- Step 1: Ensure DevKey exists ---
-    dev_key = get_devkey()
-    if not dev_key:
-        print(json.dumps({
-            "status": "no_devkey",
-            "message": f"PIKA_DEV_KEY not set. {API_SETUP_DOCS}",
-        }))
-        return False
-
-    eprint(f"DevKey: dk_...{dev_key[-4:]}")
-    auth_headers = {"Authorization": f"DevKey {dev_key}"}
-
-    # --- Step 2: Check balance ---
-    balance = check_balance(base_url, dev_key)
-    if balance is None:
-        return False
-
-    if balance >= min_balance:
-        eprint(f"Balance OK: {balance} credits")
-        print(json.dumps({"status": "funded", "balance": balance}))
-        return True
-
-    eprint(f"Balance ({balance}) below minimum ({min_balance}). Creating topup...")
-
-    # --- Step 3: Get products and create checkout ---
-    try:
-        r = requests.get(f"{base_url}/developer/topup/products", headers=auth_headers, timeout=15)
-        products = r.json().get("data", r.json()).get("products", []) if r.ok else []
-    except Exception:
-        products = []
-
-    if not products:
-        print(json.dumps({
-            "status": "needs_topup",
-            "balance": balance,
-            "message": "The API service reported no available credit options. Check your API configuration or service status.",
-        }))
-        return False
-
-    # Pick smallest sufficient product
-    deficit = min_balance - balance
-    products_sorted = sorted(products, key=lambda p: p["numCredits"])
-    chosen = next((p for p in products_sorted if p["numCredits"] >= deficit), products_sorted[-1])
-
-    # Create checkout session
-    try:
-        r = requests.post(
-            f"{base_url}/developer/topup",
-            headers={**auth_headers, "Content-Type": "application/json"},
-            json={"product_id": chosen["productId"]},
-            timeout=15,
-        )
-        checkout_url = r.json().get("data", r.json()).get("checkout_url", "") if r.ok else ""
-    except Exception:
-        checkout_url = ""
-
-    if not checkout_url:
-        print(json.dumps({"status": "needs_topup", "balance": balance, "message": "Failed to create checkout"}))
-        return False
-
-    print(json.dumps({
-        "status": "needs_topup",
-        "balance": balance,
-        "product": chosen["name"],
-        "credits": chosen["numCredits"],
-        "checkout_url": checkout_url,
-        "message": f"API service credits required. Visit the checkout URL to add credits ({chosen['name']}). Waiting for confirmation...",
-    }))
-    sys.stdout.flush()
-
-    # --- Step 4: Poll until funded ---
-    eprint(f"Waiting for payment (timeout: {poll_timeout}s)...")
-    deadline = time.time() + poll_timeout
-    while time.time() < deadline:
-        time.sleep(poll_interval)
-        balance = check_balance(base_url, dev_key)
-        if balance is not None and balance >= min_balance:
-            eprint(f"Credits confirmed! Balance: {balance}")
-            print(json.dumps({"status": "funded", "balance": balance}))
-            return True
-        eprint(f"  balance: {balance or '?'} — waiting...")
-
-    print(json.dumps({"status": "payment_timeout", "message": "Credits not confirmed in time. Try again."}))
-    return False
-
-
 def cmd_join(args):
     api_base, auth_headers = get_api_config()
-
-    # MANDATORY: full funding pipeline before every join
-    if not ensure_funded(min_balance=100):
-        return 6
 
     platform = args.platform or infer_platform(args.meet_url)
     if not platform:

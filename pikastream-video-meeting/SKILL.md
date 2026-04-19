@@ -129,8 +129,6 @@ python $SKILL_DIR/scripts/pikastreaming_videomeeting.py join \
 
 Tell the user you're in. Say `leave` to leave. Don't mention session IDs.
 
-**Exit codes:** 0 = joined. 6 = API service credits insufficient (stdout JSON contains a `checkout_url` — show it to the user so they can add credits).
-
 ## Leave
 
 ```bash

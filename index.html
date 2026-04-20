@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Inclusive Game Day — a free, non-commercial public-interest resource for accessible, sensory-friendly game experiences." />
+    <title>Inclusive Game Day</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+        background: #fdfaf6;
+        color: #1a1a1a;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      a { color: #005fa3; }
+      a:focus { outline: 3px solid #005fa3; outline-offset: 2px; }
+
+      header {
+        background: #1a3a5c;
+        color: #ffffff;
+        padding: 2.5rem 1.5rem 2rem;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        letter-spacing: 0.02em;
+        margin-bottom: 0.5rem;
+      }
+
+      header p.tagline {
+        font-size: 1.15rem;
+        font-style: italic;
+        color: #c9dff5;
+      }
+
+      main {
+        flex: 1;
+        max-width: 780px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+      }
+
+      .badge {
+        display: inline-block;
+        background: #e8f4ec;
+        color: #1a5c2e;
+        border: 1px solid #a3cba9;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-family: system-ui, sans-serif;
+        padding: 0.25rem 0.75rem;
+        margin-bottom: 1.75rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .mission {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+
+      .mission strong {
+        color: #1a3a5c;
+      }
+
+      section.accessibility-note {
+        background: #f0f5fb;
+        border-left: 4px solid #1a3a5c;
+        border-radius: 0 6px 6px 0;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      section.accessibility-note h2 {
+        font-size: 1.1rem;
+        font-family: system-ui, sans-serif;
+        margin-bottom: 0.75rem;
+        color: #1a3a5c;
+      }
+
+      section.accessibility-note ul {
+        list-style: none;
+        padding: 0;
+        line-height: 1.9;
+      }
+
+      section.accessibility-note ul li::before {
+        content: "✦ ";
+        color: #1a3a5c;
+        font-size: 0.75rem;
+      }
+
+      .open-source-note {
+        font-size: 0.95rem;
+        font-family: system-ui, sans-serif;
+        color: #444;
+        margin-bottom: 1.5rem;
+      }
+
+      footer {
+        background: #f0ece6;
+        border-top: 1px solid #d6cfc4;
+        text-align: center;
+        padding: 1.25rem 1rem;
+        font-size: 0.875rem;
+        font-family: system-ui, sans-serif;
+        color: #555;
+      }
+
+      footer a {
+        color: #005fa3;
+      }
+    </style>
+  </head>
+  <body>
+
+    <header>
+      <h1>Inclusive Game Day</h1>
+      <p class="tagline">A non-commercial open-source accessibility project for invisible disabilities and sensory needs.</p>
+    </header>
+
+    <main>
+      <p class="badge">Non-Commercial &nbsp;·&nbsp; Public Interest &nbsp;·&nbsp; Open Source</p>
+
+      <p class="mission">
+        <strong>Inclusive Game Day</strong> is a free, non-commercial, open-source public-interest accessibility project focused on improving inclusion, predictability, and support for people with <strong>invisible disabilities</strong>, <strong>sensory needs</strong>, chronic illness, neurodivergence, anxiety, and other conditions that can make participation in public experiences more difficult.
+        No paywalls. No ads. No data collection. Just practical resources that support inclusion and access.
+      </p>
+
+      <section class="accessibility-note" aria-labelledby="accessibility-heading">
+        <h2 id="accessibility-heading">What this project supports</h2>
+        <ul>
+          <li>Inclusion — everyone deserves meaningful access and participation</li>
+          <li>Predictability — clear structure and low-surprise formats that reduce overwhelm</li>
+          <li>Sensory needs — guidance on lighting, sound, texture, scent, and pacing</li>
+          <li>Invisible disabilities — resources that don't require visible proof of need</li>
+          <li>Flexible participation — options for different energy levels, communication styles, and processing speeds</li>
+        </ul>
+      </section>
+
+      <p class="open-source-note">
+        This project is open source and maintained as a public-interest accessibility resource. View the source, contribute, or adapt it freely on
+        <a href="https://github.com/xtermigator/inclusive-game-day" rel="noopener noreferrer">GitHub</a>.
+        Licensed under the MIT License.
+      </p>
+    </main>
+
+    <footer>
+      <p>This site is powered by <a href="https://www.netlify.com/" rel="noopener noreferrer">Netlify</a>.</p>
+    </footer>
+
+  </body>
+</html>
